@@ -56,4 +56,4 @@ There are two parameters that can be given to the environment via a config dict 
 ## References
 - [Custom OpenAI Gym environments](https://github.com/openai/gym/blob/master/docs/creating-environments.md)
 - [Publishing a package](https://realpython.com/pypi-publish-python-package/)
-- [Gym Environment for Yahtzee (there is a difference to Yatze)](https://github.com/villebro/gym-yahtzee)
+- [Gym Environment for Yahtzee (there is a difference to Yatzy)](https://github.com/villebro/gym-yahtzee)
