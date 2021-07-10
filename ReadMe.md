@@ -10,8 +10,7 @@ this game. You can check these Wikipedia entries for additional information:
 
 ## The rules of this environment
 
-The rules are that this environment implements are the same as explained
-[here](https://en.wikipedia.org/wiki/Yatzy).
+The rules that this environment implements are the same as explained [here](https://en.wikipedia.org/wiki/Yatzy).
 
 ## The environment
 
