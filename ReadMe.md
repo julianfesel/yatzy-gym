@@ -6,7 +6,7 @@ this game. You can check these Wikipedia entries for additional information:
 - [Yatzy](https://en.wikipedia.org/wiki/Yatzy)
 - [Yahtzee](https://en.wikipedia.org/wiki/Yahtzee)
 - [Kniffel (german)](https://de.wikipedia.org/wiki/Kniffel)
-- [Poker Dice](https://en.wikipedia.org/wiki/Poker_dice
+- [Poker Dice](https://en.wikipedia.org/wiki/Poker_dice)
 
 ## The rules of this environment
 
@@ -53,3 +53,8 @@ There are two parameters that can be given to the environment via a config dict 
   if the agent tries to roll the dice a fourth time
 - 'discrete_action' (default False): Changes the action space to be a discrete space with 46 levels. The first 31
   correspond to a specific dice mask for rolling the dice and the remaining 15 to the filling of one of the boxes. 
+  
+## References
+- [Custom OpenAI Gym environments](https://github.com/openai/gym/blob/master/docs/creating-environments.md)
+- [Publishing a package](https://realpython.com/pypi-publish-python-package/)
+- [Gym Environment for Yahtzee (there is a difference to Yatze)](https://github.com/villebro/gym-yahtzee)
