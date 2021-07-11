@@ -42,7 +42,7 @@ class YatzyEnv(gym.Env):
         self.wrong_move_punishment = self.env_config.get('wrong_move_punishment', -10)
 
         # Set reward range
-        self.reward_range = (self.wrong_move_punishment, 71)
+        self.reward_range = (self.wrong_move_punishment, 86)
 
         # Define action space depending on fiven parameter
         if self.discrete_actions:
@@ -122,7 +122,7 @@ class YatzyEnv(gym.Env):
 
         # Either fill a field or roll the selected dice, depending on chosen action
         if fill_field:  # take action to fill one of the fields
-            reward = self.fill_eye_fields(field_to_fill)
+            reward = self.fill_field(field_to_fill)
             self.reset_turn()
         else:  # take action to roll some of the dice again
             reward = self.roll_dice(dice_mask)
@@ -193,7 +193,7 @@ class YatzyEnv(gym.Env):
             field_to_fill += 1
         return dice_mask, fill_field, field_to_fill
 
-    def fill_eye_fields(self, field_to_fill: int) -> Union[float, int]:
+    def fill_field(self, field_to_fill: int) -> Union[float, int]:
         """
         Function to handle process of filling a field. Changes the environment and returns the appropriate reward
         :param field_to_fill: Integer determining the field to fill from action of agent
@@ -222,35 +222,37 @@ class YatzyEnv(gym.Env):
                         pass
             # handle special fields
             elif field_to_fill == 7:  # pair
-                eye_counts = np.bincount(dice)
-                if np.any(eye_counts >= 2):
-                    reward = dice.sum()
+                eye_counts = np.bincount(dice, minlength=7)
+                pair_indices = np.arange(0, 7)[eye_counts > 1]
+                if pair_indices.size > 0:
+                    reward = pair_indices[-1] * 2
                     field_rewards[field_to_fill] = reward
                 else:
                     reward = 0
                     field_rewards[field_to_fill] = reward
             elif field_to_fill == 8:  # two pairs
-                eye_counts = np.bincount(dice)
-                if (eye_counts >= 2).sum() == 2: # The pairs must be different
-                    reward = dice.sum()
+                eye_counts = np.bincount(dice, minlength=7)
+                pair_indices = np.arange(0, 7)[eye_counts > 1]
+                if pair_indices.size > 1:
+                    reward = pair_indices[-2:].sum() * 2
                     field_rewards[field_to_fill] = reward
                 else:
                     reward = 0
                     field_rewards[field_to_fill] = reward
             elif field_to_fill == 9:  # three of the same
-                eye_counts = np.bincount(dice)
-                eyes_on_dice = eye_counts.argmax()
-                if eye_counts[eyes_on_dice] >= 3:
-                    reward = dice.sum()
+                eye_counts = np.bincount(dice, minlength=7)
+                three_of_the_same = np.arange(0, 7)[eye_counts > 2]
+                if three_of_the_same.size > 0:
+                    reward = three_of_the_same[-1] * 3
                     field_rewards[field_to_fill] = reward
                 else:
                     reward = 0
                     field_rewards[field_to_fill] = reward
             elif field_to_fill == 10:  # four of the same
-                eye_counts = np.bincount(dice)
-                eyes_on_dice = eye_counts.argmax()
-                if eye_counts[eyes_on_dice] >= 4:
-                    reward = dice.sum()
+                eye_counts = np.bincount(dice, minlength=7)
+                four_of_the_same = np.arange(0, 7)[eye_counts > 3]
+                if four_of_the_same.size > 0:
+                    reward = four_of_the_same[-1] * 4
                     field_rewards[field_to_fill] = reward
                 else:
                     reward = 0
@@ -265,14 +267,14 @@ class YatzyEnv(gym.Env):
                     field_rewards[field_to_fill] = reward
             elif field_to_fill == 12:  # small straight
                 if np.all(dice == np.arange(1, 6)):
-                    reward = dice.sum()
+                    reward = 15
                     field_rewards[field_to_fill] = reward
                 else:
                     reward = 0
                     field_rewards[field_to_fill] = reward
             elif field_to_fill == 13:  # large straight
                 if np.all(dice == np.arange(2, 7)):
-                    reward = dice.sum()
+                    reward = 20
                     field_rewards[field_to_fill] = reward
                 else:
                     reward = 0
@@ -376,7 +378,7 @@ class YatzyEnv(gym.Env):
         out += field_rewards
 
         # Generate string for action information depending on rolling or field filling
-        action_info = [" "*21]*2
+        action_info = [" " * 21] * 2
 
         if self.last_action['fill_field']:
             name_index = self.last_action['field_to_fill']
