@@ -46,7 +46,7 @@ class YatzyEnv(gym.Env):
 
         # Define action space depending on fiven parameter
         if self.discrete_actions:
-            self.action_space = spaces.Tuple([spaces.Discrete(31 + 15)])
+            self.action_space = spaces.Discrete(31 + 15)
         else:
             self.action_space = spaces.Dict({
                 'dice_mask': spaces.Tuple([spaces.Discrete(2)] * 5),
@@ -163,7 +163,7 @@ class YatzyEnv(gym.Env):
 
         return obs
 
-    def normalize_action(self, action: spaces.tuple) -> Tuple[np.array, bool, int]:
+    def normalize_action(self, action: Union[spaces.dict, spaces.discrete]) -> Tuple[np.array, bool, int]:
         """
         Resolves the action space coming from the agent into the internal format of the step function.
         :param action: the action from the agent
@@ -175,14 +175,13 @@ class YatzyEnv(gym.Env):
         an integer determining the field to fill
         """
         if self.discrete_actions:
-            chosen_action = action[0]
-            if chosen_action < 31:  # Case were agent wants to roll the dice
-                dice_mask = self.action_dice_masks[chosen_action]
+            if action < 31:  # Case were agent wants to roll the dice
+                dice_mask = self.action_dice_masks[action]
                 fill_field = False
                 field_to_fill = -1
             else:  # Case were agent wants to fill a field
                 fill_field = True
-                field_to_fill = chosen_action - 31
+                field_to_fill = action - 31
                 dice_mask = None
         else:
             dice_mask = np.array(action['dice_mask'])
