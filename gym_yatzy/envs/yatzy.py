@@ -163,7 +163,7 @@ class YatzyEnv(gym.Env):
 
         return obs
 
-    def normalize_action(self, action: Union[spaces.dict, spaces.discrete]) -> Tuple[np.array, bool, int]:
+    def normalize_action(self, action: Union[spaces.Dict, spaces.Discrete]) -> Tuple[np.array, bool, int]:
         """
         Resolves the action space coming from the agent into the internal format of the step function.
         :param action: the action from the agent
