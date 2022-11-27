@@ -54,6 +54,6 @@ There are two parameters that can be given to the environment via a config dict 
   correspond to a specific dice mask for rolling the dice and the remaining 15 to the filling of one of the boxes. 
   
 ## References
-- [Custom OpenAI Gym environments](https://github.com/openai/gym/blob/master/docs/creating-environments.md)
+- [Custom Gymnasium environments](https://gymnasium.farama.org/tutorials/environment_creation/)
 - [Publishing a package](https://realpython.com/pypi-publish-python-package/)
 - [Gym Environment for Yahtzee (there is a difference to Yatzy)](https://github.com/villebro/gym-yahtzee)
