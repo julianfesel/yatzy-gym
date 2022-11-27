@@ -1,7 +1,7 @@
 import numpy as np
-import gym
-from gym import spaces
-from gym.utils import seeding
+import gymnasium as gym
+from gymnasium import spaces
+from gymnasium.utils import seeding
 import sys
 from typing import List, Dict, Tuple, Union, Any, Optional
 
